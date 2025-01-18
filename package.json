@@ -9,7 +9,7 @@
 		"dev": "nodemon app.js",
 		"start": "node app.js",
 		"build": "npm run build:tailwind",
-		"build:tailwind": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch"
+		"build:tailwind": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css --minify"
 	},
 	"_moduleAliases": {
 		"@": "src"
