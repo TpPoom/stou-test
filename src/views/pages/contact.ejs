@@ -1,0 +1,30 @@
+<section class="flex flex-col grow gap-8 px-8 md:px-16 py-8">
+	<h1
+		class="text-2xl font-semibold whitespace-nowrap px-4 border-s-8 border-s-primary"
+	>
+		ติดต่อสมาคม
+	</h1>
+	<div class="flex grow gap-8 flex-col lg:flex-row">
+		<iframe
+			src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30983.27555792531!2d100.52445619234811!3d13.904360616579853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e2837b9591b0e1%3A0xf01923824353130!2sSukhothai%20Thammathirat%20Open%20University!5e0!3m2!1sen!2sth!4v1736501391825!5m2!1sen!2sth"
+			class="flex w-full lg:w-2/3 min-h-96 lg:min-h-full border-0"
+			allowfullscreen=""
+			loading="lazy"
+			referrerpolicy="no-referrer-when-downgrade"
+		></iframe>
+		<div class="flex flex-col gap-8 ms-0 lg:ms-4">
+			<div class="flex flex-col gap-4">
+				<h2 class="text-xl font-semibold">ติดต่อ : สมาคมนิติศาสตร์ มสธ.</h2>
+				<p><%= contact.post %></p>
+			</div>
+			<div class="flex flex-col gap-4">
+				<h2 class="text-xl font-semibold">
+					สถานที่ตั้ง : มหาวิทยาลัยสุโขทัยธรรมาธิราช
+				</h2>
+				<p><%= contact.address %></p>
+				<p>โทรศัพท์. <%= contact.tel %></p>
+				<p>โทรสาร. <%= contact.fax %></p>
+			</div>
+		</div>
+	</div>
+</section>

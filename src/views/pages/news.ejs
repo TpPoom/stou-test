@@ -1,0 +1,62 @@
+<section class="flex flex-col gap-8 px-8 md:px-16 py-8">
+	<h1
+		class="text-2xl font-semibold whitespace-nowrap px-4 border-s-8 border-s-primary"
+	>
+		ข่าวสารและกิจกรรม
+	</h1>
+	<div
+		class="flex flex-col mx-auto gap-4 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 items-center"
+	>
+		<div class="flex flex-col gap-1 w-full">
+			<h4 class="text-2xl font-semibold me-auto"><%= newsItem.title %></h4>
+			<div class="flex items-center gap-2 me-auto text-gray-600">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					fill="currentColor"
+					class="bi bi-calendar4"
+					viewBox="0 0 16 16"
+				>
+					<path
+						d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"
+					/>
+				</svg>
+				<span><%= newsItem.formattedDate %></span>
+			</div>
+		</div>
+		<img
+			src="/assets/uploads/news/<%= newsItem.img %>"
+			class="object-contain mb-4 w-full"
+			alt="news"
+		/>
+		<p class="text-lg">&emsp;&emsp;<%= newsItem.content %></p>
+	</div>
+	<div
+		class="flex flex-col p-8 gap-4 border border-gray-200 bg-white rounded-lg shadow-md"
+	>
+		<h1
+			class="text-2xl font-semibold whitespace-nowrap px-4 border-s-8 border-s-primary"
+		>
+			ข่าวสารล่าสุด
+		</h1>
+		<div class="flex flex-col gap-4 w-full">
+			<% news.forEach(news => { %>
+			<a
+				href="/news/<%= news.id %>"
+				class="flex flex-col sm:flex-row gap-4 p-4 border items-center border-gray-200 bg-white rounded shadow-md hover:shadow-xl hover:text-primary"
+			>
+				<img
+					src="/assets/uploads/news/<%= news.img %>"
+					alt="<%= news.image %>"
+					class="w-full sm:h-20 sm:w-32 object-cover object-top rounded"
+				/>
+				<p class="text-md md:text-lg font-semibold"><%= news.title %></p>
+				<p class="whitespace-nowrap text-sm font-light ms-auto mt-auto">
+					<%= news.formattedDate %>
+				</p>
+			</a>
+			<% }) %>
+		</div>
+	</div>
+</section>

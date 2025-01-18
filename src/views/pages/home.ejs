@@ -1,0 +1,145 @@
+<section class="flex flex-col gap-4">
+	<div class="relative w-full mx-auto overflow-hidden">
+		<div
+			id="slideshow"
+			class="flex transition-transform duration-700 ease-in-out"
+		>
+			<% images.forEach(image => { %>
+			<img
+				src="/assets/uploads/infographic/<%= image %>"
+				alt="<%= image %>"
+				class="min-w-full h-auto"
+			/>
+			<% }) %>
+		</div>
+
+		<div class="absolute inset-0 flex items-center justify-between px-4">
+			<button
+				type="button"
+				class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+				id="prev"
+			>
+				<span
+					class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none"
+				>
+					<svg
+						class="w-4 h-4 text-white rtl:rotate-180"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 6 10"
+					>
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M5 1 1 5l4 4"
+						/>
+					</svg>
+					<span class="sr-only">Previous</span>
+				</span>
+			</button>
+			<button
+				type="button"
+				class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+				id="next"
+			>
+				<span
+					class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none"
+				>
+					<svg
+						class="w-4 h-4 text-white rtl:rotate-180"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 6 10"
+					>
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="m1 9 4-4-4-4"
+						/>
+					</svg>
+					<span class="sr-only">Next</span>
+				</span>
+			</button>
+		</div>
+
+		<div
+			id="dots"
+			class="absolute bottom-4 left-0 right-0 flex justify-center gap-2"
+		>
+			<% images.forEach((image, i) => { %>
+			<button
+				class="w-2 h-2 rounded-full bg-gray-300 opacity-75"
+				data-index="<%= i %>"
+				aria-label="Slide <%= i + 1 %>"
+			></button>
+			<% }) %>
+		</div>
+	</div>
+	<div class="flex flex-col gap-4 px-8 md:px-16 py-8">
+		<h1
+			class="text-2xl font-semibold whitespace-nowrap px-4 border-s-8 border-s-primary"
+		>
+			ข่าวสารและกิจกรรม
+		</h1>
+		<div
+			class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+		>
+			<% news.forEach(news => { %>
+			<a
+				href="/news/<%= news.id %>"
+				class="flex flex-col p-4 border border-gray-200 bg-white rounded shadow-md hover:shadow-xl hover:text-primary"
+			>
+				<img
+					src="/assets/uploads/news/<%= news.img %>"
+					alt="<%= news.image %>"
+					class="w-full h-64 object-cover object-top rounded"
+				/>
+				<p class="text-lg font-semibold mt-4 mb-2"><%= news.title %></p>
+				<p class="text-sm font-light ms-auto mt-auto">
+					<%= news.formattedDate %>
+				</p>
+			</a>
+			<% }) %>
+		</div>
+	</div>
+</section>
+
+<script>
+	const slideshow = document.getElementById("slideshow");
+	const slides = slideshow.children;
+	const prevBtn = document.getElementById("prev");
+	const nextBtn = document.getElementById("next");
+	const dots = document.getElementById("dots").children;
+
+	let index = 0;
+
+	function updateDots() {
+		Array.from(dots).forEach((dot, i) => {
+			dot.classList.toggle("bg-gray-100", i === index);
+			dot.classList.toggle("bg-gray-400", i !== index);
+		});
+	}
+
+	function showSlide(newIndex) {
+		index = (newIndex + slides.length) % slides.length;
+		slideshow.style.transform = `translateX(-${index * 100}%)`;
+		updateDots();
+	}
+
+	prevBtn.addEventListener("click", () => showSlide(index - 1));
+	nextBtn.addEventListener("click", () => showSlide(index + 1));
+
+	Array.from(dots).forEach((dot, i) => {
+		dot.addEventListener("click", () => showSlide(i));
+	});
+
+	updateDots();
+
+	setInterval(() => showSlide(index + 1), 5000);
+</script>

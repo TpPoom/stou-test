@@ -1,0 +1,109 @@
+<nav class="bg-white shadow-md">
+	<div
+		class="w-full flex flex-wrap items-center justify-between px-8 md:px-16 py-2 md:py-0"
+	>
+		<a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+			<img src="/assets/images/logo.png" class="h-16" alt="Logo" />
+			<h1
+				class="hidden lg:block text-xl xl:text-2xl self-center pt-2 font-semibold whitespace-nowrap"
+			>
+				สมาคมนิติศาสตร์มหาวิทยาลัยสุโขทัยธรรมาธิราช
+			</h1>
+		</a>
+		<button
+			data-collapse-toggle="navbar-dropdown"
+			type="button"
+			class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 md:hidden rounded md:rounded-none hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+			aria-controls="navbar-dropdown"
+			aria-expanded="false"
+		>
+			<span class="sr-only">Open main menu</span>
+			<svg
+				class="w-5 h-5"
+				aria-hidden="true"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 17 14"
+			>
+				<path
+					stroke="currentColor"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M1 1h15M1 7h15M1 13h15"
+				/>
+			</svg>
+		</button>
+		<div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+			<div
+				class="flex flex-col font-medium my-4 h-auto md:h-20 border border-gray-100 rounded bg-gray-50 md:space-x-4 rtl:space-x-reverse md:flex-row md:my-0 md:border-0 md:bg-white"
+			>
+				<a
+					href="/"
+					class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded md:rounded-none md:hover:border-b-primary md:border-b-4 md:border-white md:hover:text-green-800 md:p-0 md:w-auto <%= title == 'หน้าหลัก' ? 'md:border-b-primary' : '' %>"
+					aria-current="page"
+					>หน้าหลัก</a
+				>
+				<button
+					id="dropdownNavbarLink"
+					data-dropdown-toggle="dropdownNavbar"
+					data-dropdown-placement="right"
+					data-dropdown-offset-distance="-175"
+					data-dropdown-offset-skidding="85"
+					class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded md:rounded-none md:hover:border-b-primary md:border-b-4 md:border-white md:hover:text-green-800 md:p-0 md:w-auto <%= (title === 'คณะกรรมการ' || title === 'ประวัติสมาคม') ? 'md:border-b-primary' : '' %>"
+				>
+					เกี่ยวกับสมาคม
+					<svg
+						class="w-2.5 h-2.5 ms-1"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 10 6"
+					>
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="m1 1 4 4 4-4"
+						/>
+					</svg>
+				</button>
+				<div
+					id="dropdownNavbar"
+					class="z-10 hidden font-normal rounded bg-white divide-y divide-gray-100 shadow w-44"
+				>
+					<ul
+						class="py-2 text-sm text-gray-800-lg"
+						aria-labelledby="dropdownLargeButton"
+					>
+						<li>
+							<a
+								href="/about"
+								class="block px-4 py-4 md:py-2 rounded md:rounded-none hover:text-primary"
+								>ประวัติสมาคม</a
+							>
+						</li>
+						<li>
+							<a
+								href="/committees"
+								class="block px-4 py-4 md:py-2 rounded md:rounded-none hover:text-primary"
+								>คณะกรรมการ</a
+							>
+						</li>
+					</ul>
+				</div>
+				<a
+					href="/events"
+					class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded md:rounded-none md:hover:border-b-primary md:border-b-4 md:border-white md:hover:text-green-800 md:p-0 md:w-auto <%= title == 'ปฏิทินกิจกรรม' ? 'md:border-b-primary' : '' %>"
+					>ปฏิทินกิจกรรม</a
+				>
+				<a
+					href="/contact"
+					class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded md:rounded-none md:hover:border-b-primary md:border-b-4 md:border-white md:hover:text-green-800 md:p-0 md:w-auto <%= title == 'ติดต่อเรา' ? 'md:border-b-primary' : '' %>"
+					>ติดต่อเรา</a
+				>
+			</div>
+		</div>
+	</div>
+</nav>

@@ -1,0 +1,437 @@
+<section class="flex flex-col grow gap-8 px-8 md:px-16 py-8">
+	<div class="grid grid-cols-12 w-full">
+		<div class="col-span-12 xl:col-span-5">
+			<h1
+				class="text-2xl font-semibold whitespace-nowrap px-4 border-s-8 border-s-primary mb-8 mt-8 md:mt-0"
+			>
+				ปฏิทินกิจกรรม
+			</h1>
+			<div id="events" class="flex gap-2 flex-col"></div>
+		</div>
+		<div class="col-span-12 xl:col-span-7 p-0 md:p-4 max-xl:row-start-1">
+			<div
+				class="flex flex-col md:flex-row gap-4 items-center justify-center mb-8"
+			>
+				<div class="flex items-center">
+					<button
+						id="prevMonth"
+						class="text-primary p-1 rounded transition-all duration-300 hover:text-white hover:bg-primary"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="16"
+							height="16"
+							viewBox="0 0 16 16"
+							fill="none"
+						>
+							<path
+								d="M10.0002 11.9999L6 7.99971L10.0025 3.99719"
+								stroke="currentcolor"
+								stroke-width="1.3"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							></path>
+						</svg>
+					</button>
+					<h5
+						id="month"
+						class="text-2xl leading-8 w-48 text-center font-semibold text-gray-900"
+					></h5>
+					<button
+						id="nextMonth"
+						class="text-primary p-1 rounded transition-all duration-300 hover:text-white hover:bg-primary"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="16"
+							height="16"
+							viewBox="0 0 16 16"
+							fill="none"
+						>
+							<path
+								d="M6.00236 3.99707L10.0025 7.99723L6 11.9998"
+								stroke="currentcolor"
+								stroke-width="1.3"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+			<div class="border border-primary rounded-xl">
+				<div class="grid grid-cols-7 rounded-t-3xl border-b border-secondary">
+					<% const days = [ "อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี",
+					"ศุกร์", "เสาร์" ]; %> <% days.forEach((day, index) => { %>
+					<div
+						class="hidden md:flex py-3.5 border-r <%= index === 0 ? 'rounded-tl-xl' : '' %> <%= index === 6 ? 'rounded-tr-xl' : '' %> border-secondary bg-green-100 items-center justify-center text-sm font-medium text-primary"
+					>
+						<%= day %>
+					</div>
+					<% }); %> <% const shortDays = [ "อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.",
+					"ส." ]; %> <% shortDays.forEach((day, index) => { %>
+					<div
+						class="flex md:hidden py-3.5 border-r <%= index === 0 ? 'rounded-tl-xl' : '' %> <%= index === 6 ? 'rounded-tr-xl' : '' %> border-secondary bg-green-100 items-center justify-center text-sm font-medium text-primary"
+					>
+						<%= day %>
+					</div>
+					<% }); %>
+				</div>
+				<div class="grid grid-cols-7 rounded-b-xl"></div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	const convertDate = (dateString) => {
+		const months = [
+			"ม.ค.",
+			"ก.พ.",
+			"มี.ค.",
+			"เม.ย.",
+			"พ.ค.",
+			"มิ.ย.",
+			"ก.ค.",
+			"ส.ค.",
+			"ก.ย.",
+			"ต.ค.",
+			"พ.ย.",
+			"ธ.ค.",
+		];
+		const date = new Date(dateString);
+		const day = String(date.getDate()).padStart(2, "0");
+		const month = months[date.getMonth()];
+		const year = date.getFullYear() + 543;
+		return `${day} ${month} ${year}`;
+	};
+
+	const eventsContainer = document.getElementById("events");
+
+	const displayEventsForMonth = (events, selectedMonth, selectedYear) => {
+		eventsContainer.innerHTML = "";
+
+		const eventsInSelectedMonth = events.filter((event) => {
+			const eventDate = new Date(event.date);
+			return (
+				eventDate.getMonth() === selectedMonth &&
+				eventDate.getFullYear() === selectedYear
+			);
+		});
+
+		if (eventsInSelectedMonth.length !== 0) {
+			eventsInSelectedMonth.forEach((event) => {
+				event.formattedDate = convertDate(event.date);
+
+				const eventDiv = document.createElement("div");
+				eventDiv.id = `event-${new Date(event.date).getDate()}`;
+				eventDiv.className = "mb-1 p-6 rounded-xl border-2 shadow-md";
+				eventDiv.style.borderColor = `rgba(${event.color}, .2)`;
+
+				const eventHeader = document.createElement("div");
+				eventHeader.className = "flex items-center justify-between mb-3";
+
+				const eventInfo = document.createElement("div");
+				eventInfo.className = "flex items-center gap-2.5";
+
+				const eventColor = document.createElement("span");
+				eventColor.className = "w-2.5 h-2.5 rounded-full";
+				eventColor.style.backgroundColor = `rgba(${event.color}, 1)`;
+
+				const eventDate = document.createElement("p");
+				eventDate.className = "text-base font-medium text-gray-900";
+				eventDate.textContent = `${event.formattedDate} (${event.start_time} - ${event.end_time})`;
+
+				eventInfo.appendChild(eventColor);
+				eventInfo.appendChild(eventDate);
+				eventHeader.appendChild(eventInfo);
+				eventDiv.appendChild(eventHeader);
+
+				const eventTitle = document.createElement("h6");
+				eventTitle.className =
+					"text-xl leading-8 font-semibold text-black mb-1";
+				eventTitle.textContent = event.title;
+
+				const eventDescription = document.createElement("p");
+				eventDescription.className = "text-base font-normal text-gray-600";
+				eventDescription.textContent = event.description;
+
+				eventDiv.appendChild(eventTitle);
+				eventDiv.appendChild(eventDescription);
+
+				eventsContainer.appendChild(eventDiv);
+			});
+		} else {
+			const noEventsDiv = document.createElement("div");
+			noEventsDiv.className =
+				"mb-1 p-6 rounded-xl border-green-50 border-2 shadow-md";
+
+			const noEventsText = document.createElement("h6");
+			noEventsText.className =
+				"text-xl leading-8 text-center font-semibold text-gray-400 mb-1";
+			noEventsText.textContent = "ไม่มีกิจกรรม";
+
+			noEventsDiv.appendChild(noEventsText);
+			eventsContainer.appendChild(noEventsDiv);
+		}
+	};
+
+	const getCalendarDates = (events, currentMonth, currentYear) => {
+		const dates = [];
+
+		const getDaysInMonth = (month, year) => {
+			return new Date(year, month + 1, 0).getDate();
+		};
+
+		const prevMonthDays = getDaysInMonth(
+			currentMonth - 1 < 0 ? 11 : currentMonth - 1,
+			currentMonth - 1 < 0 ? currentYear - 1 : currentYear
+		);
+		const currentMonthDays = getDaysInMonth(currentMonth, currentYear);
+		const nextMonthDays = getDaysInMonth(
+			currentMonth + 1 > 11 ? 0 : currentMonth + 1,
+			currentMonth + 1 > 11 ? currentYear + 1 : currentYear
+		);
+
+		const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+		const lastDayOfMonth = new Date(
+			currentYear,
+			currentMonth,
+			currentMonthDays
+		).getDay();
+
+		for (let i = firstDayOfMonth - 1; i >= 0; i--) {
+			dates.push({
+				day: prevMonthDays - i,
+				month: "prev",
+				events: [],
+			});
+		}
+
+		for (let i = 1; i <= currentMonthDays; i++) {
+			dates.push({
+				day: i,
+				month: "current",
+				events: [],
+			});
+		}
+
+		for (let i = 1; i <= 6 - lastDayOfMonth; i++) {
+			dates.push({
+				day: i,
+				month: "next",
+				events: [],
+			});
+		}
+
+		const monthNamesThai = [
+			"มกราคม",
+			"กุมภาพันธ์",
+			"มีนาคม",
+			"เมษายน",
+			"พฤษภาคม",
+			"มิถุนายน",
+			"กรกฎาคม",
+			"สิงหาคม",
+			"กันยายน",
+			"ตุลาคม",
+			"พฤศจิกายน",
+			"ธันวาคม",
+		];
+
+		dates.forEach((date, index) => {
+			date.index = index;
+		});
+
+		return {
+			dates,
+			monthName: monthNamesThai[currentMonth],
+			year: currentYear + 543,
+		};
+	};
+
+	const renderCalendar = (dates, currentMonth, currentYear) => {
+		const calendarContainer = document.querySelector(
+			".grid-cols-7.rounded-b-xl"
+		);
+		calendarContainer.innerHTML = "";
+
+		dates.forEach(({ index, day, month, events }) => {
+			const dayElement = document.createElement("div");
+			dayElement.onclick = () => {
+				const eventElement = document.getElementById(`event-${day}`);
+				if (eventElement) {
+					eventElement.scrollIntoView({ behavior: "smooth" });
+				}
+			};
+			dayElement.className = `flex relative xl:aspect-square max-xl:min-h-[60px] p-3.5 ${
+				month === "prev" || month === "next" ? "bg-gray-100" : "bg-white"
+			} border-r border-b border-secondary transition-all duration-300 ${
+				events.length ? "cursor-pointer hover:bg-gray-100" : ""
+			} ${index === dates.length - 7 ? "rounded-bl-xl" : ""} ${
+				index === dates.length - 1 ? "rounded-br-xl" : ""
+			}`;
+
+			const daySpan = document.createElement("span");
+			daySpan.className = `text-xs font-semibold ${
+				month === "current" ? "text-gray-900" : "text-gray-400"
+			}`;
+			daySpan.textContent = day;
+			dayElement.appendChild(daySpan);
+
+			const dayEvents = events.filter((event) => {
+				const eventDate = new Date(event.date);
+				return (
+					eventDate.getDate() === day &&
+					eventDate.getMonth() === currentMonth &&
+					eventDate.getFullYear() === currentYear
+				);
+			});
+
+			if (dayEvents.length) {
+				if (dayEvents.length === 1) {
+					const event = dayEvents[0];
+					const eventDiv = document.createElement("div");
+					eventDiv.className =
+						"absolute z-20 top-9 bottom-1 left-3.5 p-1.5 xl:px-2.5 h-max rounded shadow-md";
+					eventDiv.style.backgroundColor = `rgba(${event.color}, .2)`;
+
+					const eventTitle = document.createElement("p");
+					eventTitle.className = "hidden xl:block text-xs font-medium mb-px";
+					eventTitle.style.color = `rgba(${event.color}, 1)`;
+					eventTitle.textContent = event.title;
+					eventDiv.appendChild(eventTitle);
+
+					const eventTime = document.createElement("span");
+					eventTime.className =
+						"hidden xl:block text-xs font-normal whitespace-nowrap";
+					eventTime.style.color = `rgba(${event.color}, 1)`;
+					eventTime.textContent = `${event.start_time} - ${event.end_time}`;
+					eventDiv.appendChild(eventTime);
+
+					const eventDot = document.createElement("p");
+					eventDot.className = "xl:hidden w-2 h-2 rounded-full";
+					eventDot.style.backgroundColor = `rgba(${event.color}, 1)`;
+					eventDiv.appendChild(eventDot);
+
+					dayElement.appendChild(eventDiv);
+				} else {
+					const eventCountBadge = document.createElement("div");
+					eventCountBadge.className = `absolute z-20 top-9 bottom-1 left-3.5 w-5 h-5 xl:w-16 xl:h-8 opacity-75 flex items-center justify-center rounded bg-primary text-white text-xs font-bold shadow-md`;
+					eventCountBadge.textContent = dayEvents.length;
+					dayElement.appendChild(eventCountBadge);
+
+					const eventCountText = document.createElement("span");
+					eventCountText.className = "hidden xl:inline ml-1";
+					eventCountText.textContent = "กิจกรรม";
+					eventCountBadge.appendChild(eventCountText);
+				}
+			}
+
+			calendarContainer.appendChild(dayElement);
+		});
+	};
+
+	const colors = [
+		"220, 80, 80",
+		"80, 180, 80",
+		"80, 80, 200",
+		"220, 140, 80",
+		"220, 80, 140",
+		"140, 80, 220",
+		"80, 200, 140",
+		"80, 140, 200",
+		"200, 200, 80",
+		"200, 100, 100",
+		"100, 200, 100",
+		"100, 100, 200",
+		"220, 180, 80",
+		"220, 80, 180",
+		"180, 80, 220",
+		"80, 220, 180",
+		"80, 180, 220",
+		"180, 220, 80",
+		"220, 120, 180",
+		"120, 220, 180",
+		"180, 120, 220",
+		"220, 180, 120",
+		"180, 220, 120",
+		"120, 180, 220",
+		"220, 100, 100",
+		"100, 220, 100",
+		"100, 100, 220",
+		"220, 80, 120",
+		"120, 80, 220",
+		"80, 220, 120",
+	];
+
+	let colorIndex = 0;
+	const getNextColor = () => {
+		const color = colors[colorIndex];
+		colorIndex = (colorIndex + 1) % colors.length;
+
+		return color;
+	};
+
+	fetch("/data/events.json")
+		.then((response) => response.json())
+		.then((events) => {
+			let currentMonth = new Date().getMonth();
+			let currentYear = new Date().getFullYear();
+
+			document.getElementById("prevMonth").addEventListener("click", () => {
+				if (currentMonth === 0) {
+					currentMonth = 11;
+					currentYear -= 1;
+				} else {
+					currentMonth -= 1;
+				}
+
+				updateCalendar();
+			});
+
+			document.getElementById("nextMonth").addEventListener("click", () => {
+				if (currentMonth === 11) {
+					currentMonth = 0;
+					currentYear += 1;
+				} else {
+					currentMonth += 1;
+				}
+
+				updateCalendar();
+			});
+
+			updateCalendar = () => {
+				const { dates, monthName, year } = getCalendarDates(
+					events,
+					currentMonth,
+					currentYear
+				);
+
+				events.forEach((event) => {
+					const eventDate = new Date(event.date);
+					const eventDay = eventDate.getDate();
+					const eventMonth = eventDate.getMonth();
+					const eventYear = eventDate.getFullYear();
+
+					if (eventMonth === currentMonth && eventYear === currentYear) {
+						dates.forEach((dateObj) => {
+							if (dateObj.day === eventDay && dateObj.month === "current") {
+								event.color = getNextColor();
+								dateObj.events.push(event);
+							}
+						});
+					}
+				});
+
+				document.getElementById("month").textContent = `${monthName} ${year}`;
+				renderCalendar(dates, currentMonth, currentYear);
+
+				displayEventsForMonth(events, currentMonth, currentYear);
+			};
+
+			updateCalendar();
+		})
+		.catch((error) => {
+			console.error("Error fetching events:", error);
+		});
+</script>
